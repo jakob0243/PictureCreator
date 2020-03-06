@@ -10,7 +10,7 @@ Tasks:
 """
 import sys
 import cv2
-import numpy as np
+import json
 
 
 IMAGE_DIR = "./DataSets/Images/"
@@ -27,8 +27,6 @@ def avg_colour(img):
     @param img an image
     @return the average value of the pixels
     """
-    print(len(img))
-    print(img[40])
     total = 0
     total2 = 0
     total3 = 0
@@ -42,11 +40,10 @@ def avg_colour(img):
                 total2 += pixel[1]
                 total3 += pixel[2]
                 num_pixels += 1
-                print(p_sum)
 
     print(f"Total: {total}")
     print(f"No. pixels: {num_pixels}")
-    return [(total / num_pixels), (total2 / num_pixels), (total3 / num_pixels)]
+    return [int((total / num_pixels)), int((total2 / num_pixels)), int((total3 / num_pixels))]
 
 
 def read_images():
@@ -54,18 +51,30 @@ def read_images():
     Read images in directory, average the colour for each
     image and save it.
     """
-    pass
+    colour_values = {}
+
+    for row in range(0, 26):
+        for col in range(0, 18):
+            current_img = f"{row}-{col}.png"
+            to_avg = cv2.imread(IMAGE_DIR + current_img)
+            # cv2.imshow("image", to_avg)
+            # cv2.waitKey(0)
+            try:
+                colour = avg_colour(to_avg)
+                colour_values[current_img] = colour
+            except ZeroDivisionError as e:
+                print("All black picture found and not counted")
+
+
+    with open("colour_data.json", "w") as outfile:
+        json.dump(colour_values, outfile)
+
 
 
 def init_data_set():
     """
     Reads image, splits it up into individual images and saves them
     """
-    img = cv2.imread("./DataSets/dataset_pokemon.png")
-    cv2.imshow("Image", img)
-
-    print(img.shape)
-
     x = 0
     y = 0
     for row in range(0, 26):
@@ -75,7 +84,6 @@ def init_data_set():
             cropped_img = cropped_img[x:x+IMAGE_WIDTH, y:y+IMAGE_HEIGHT]
             cv2.imwrite(f"./DataSets/Images/{row}-{col}.png", cropped_img)
             x += IMAGE_WIDTH
-            print(x, y)
         x = 0
         y += IMAGE_HEIGHT
 
@@ -84,13 +92,15 @@ def init_data_set():
 
 if __name__ == "__main__":
     #  init_data_set()
-    image = cv2.imread(IMAGE_DIR + '1-9.png')
+    """image = cv2.imread(IMAGE_DIR + '13-13.png')
     cv2.imshow('image', image)
     cv2.waitKey(0)
     colour = avg_colour(image)
     print(colour)
-    # NEEDS TO BE <=255
-    img2 = [[colour for x in range(0, 80)] for x in range(0, 80)]
-    img2 = np.array(img2)
-    cv2.imshow('image', img2)
-    cv2.waitKey(0)
+    for row in image:
+        for pixel in row:
+            pixel[0], pixel[1], pixel[2] = colour[0], colour[1], colour[2]
+    cv2.imshow('image', image)
+    cv2.waitKey(0)"""
+    read_images()
+    print("Done")
