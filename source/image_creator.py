@@ -109,6 +109,8 @@ def create_img(img_path):
     img = cv2.imread(img_path)
     cv2.imshow(img_path[18:], img)
     cv2.waitKey(0)
+    # Rotate and flip, solves weird bug where created image is flipped and rotated
+    img = cv2.flip(rotate_image(img, 270), 1)
 
     current_row = 0
     current_col = 0
@@ -123,7 +125,7 @@ def create_img(img_path):
         print(f"Working on row: {current_row}...")
         print(f"Row {current_row} completed!")
 
-    cv2.imwrite(f"./DataSets/Finished/Test{img_path[18:]}", rotate_image(new_image, 270))  # {img_path[18:]}", new_image) flip 0
+    cv2.imwrite(f"./DataSets/Finished/Test{img_path[18:]}", new_image)  #rotate_image(new_image, 270))  # {img_path[18:]}", new_image) flip 0
     print("Image completed!")
 
 
@@ -133,12 +135,12 @@ if __name__ == "__main__":
 
     # create_img("./DataSets/Images/6-17.png")
     # create_test()
-    img_path = "./DataSets/Images/2-14.png"
-    """start = time.time()
-    create_img("./DataSets/Images/2-14.png")
+    img_path = "./DataSets/Images/19-13.png"
+    start = time.time()
+    create_img(img_path)
     end = time.time()
     print(f"{end - start} seconds to execute")
-    """"""
+    """
     Time before optimisations: 115.4655818939209 seconds to execute on raquaza
     Time after adding IMAGES_USED dict: 112.70291018486023
     
@@ -147,5 +149,8 @@ if __name__ == "__main__":
     # cv2.imwrite("./DataSets/Finished/Test.png", cv2.flip(read, 0))
     # read = cv2.imread("./DataSets/Finished/Test.png")
     # cv2.imwrite("./DataSets/Finished/Test.png", rotate_image(read, 270))
-    read = cv2.imread(f"./DataSets/Finished/Test{img_path[18:]}")
-    cv2.imwrite(f"./DataSets/Finished/Test{img_path[18:]}", cv2.flip(read, 1))
+    # read = cv2.imread(f"./DataSets/Finished/Test{img_path[18:]}")
+    # cv2.imwrite(f"./DataSets/Finished/Test{img_path[18:]}", cv2.flip(read, 1))
+    # image = cv2.imread("./DataSets/pokeballtest.jfif")
+    # image = cv2.resize(image, (80, 80))
+    # cv2.imwrite("./DataSets/pokeball.png", image)
