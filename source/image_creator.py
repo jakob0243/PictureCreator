@@ -107,8 +107,8 @@ def create_img(img_path):
     """
     new_image = np.zeros((6400, 6400, 3), np.uint8)
     img = cv2.imread(img_path)
-    cv2.imshow(img_path[18:], img)
-    cv2.waitKey(0)
+    # cv2.imshow(img_path[18:], img)
+    # cv2.waitKey(0)
     # Rotate and flip, solves weird bug where created image is flipped and rotated
     img = cv2.flip(rotate_image(img, 270), 1)
 
@@ -135,11 +135,17 @@ if __name__ == "__main__":
 
     # create_img("./DataSets/Images/6-17.png")
     # create_test()
+    """
     img_path = "./DataSets/Images/19-13.png"
     start = time.time()
     create_img(img_path)
     end = time.time()
     print(f"{end - start} seconds to execute")
+    """
+    names = ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
+    for name in names:
+        img_path = f"./DataSets/Images/{name}.png"
+        create_img(img_path)
     """
     Time before optimisations: 115.4655818939209 seconds to execute on raquaza
     Time after adding IMAGES_USED dict: 112.70291018486023
