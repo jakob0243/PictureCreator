@@ -107,6 +107,8 @@ def create_img(img_path):
     """
     new_image = np.zeros((6400, 6400, 3), np.uint8)
     img = cv2.imread(img_path)
+    if img.shape[0] != 80 or img.shape[1] != 80:
+        img = cv2.resize(img, (80, 80))
     # cv2.imshow(img_path[18:], img)
     # cv2.waitKey(0)
     # Rotate and flip, solves weird bug where created image is flipped and rotated
@@ -142,7 +144,7 @@ if __name__ == "__main__":
     end = time.time()
     print(f"{end - start} seconds to execute")
     """
-    names = ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
+    names = ["Tess"]  # ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
     for name in names:
         img_path = f"./DataSets/Images/{name}.png"
         create_img(img_path)
