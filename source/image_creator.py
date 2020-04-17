@@ -105,10 +105,11 @@ def create_img(img_path):
 
     @param img_path the path of the image to be created
     """
-    new_image = np.zeros((6400, 6400, 3), np.uint8)
     img = cv2.imread(img_path)
     if img.shape[0] != 80 or img.shape[1] != 80:
-        img = cv2.resize(img, (80, 80))
+        img = cv2.resize(img, (240, 240))
+    new_image = np.zeros((80*img.shape[0], 80*img.shape[1], 3), np.uint8)
+
     # cv2.imshow(img_path[18:], img)
     # cv2.waitKey(0)
     # Rotate and flip, solves weird bug where created image is flipped and rotated
