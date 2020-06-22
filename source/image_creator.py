@@ -5,6 +5,7 @@
 import json
 import math
 import time
+from os import path as path
 
 import cv2
 import numpy as np
@@ -23,6 +24,8 @@ def load_data():
 IMAGE_DICT = load_data()
 BACKGROUND_COLOUR = "black"
 BACKGROUND_IMAGE_PATH = "./DataSets/Images/24-17.png"
+SOURCE_IMG_PATH = "Z:\\new_folder\\GitHub\\PictureCreator\\source\\DataSets\\Images"
+FINAL_IMG_PATH = "Z:\\new_folder\\GitHub\\PictureCreator\\source\\DataSets\\Finished"
 IMAGES_USED = {}
 
 
@@ -77,7 +80,8 @@ def add_to_image(img_array, new_image_name, column, row):
     @return the new image with the image created
     """
     if new_image_name not in IMAGES_USED.keys():
-        pixel_img = cv2.imread(f"./DataSets/Images/{new_image_name}")
+
+        pixel_img = cv2.imread(SOURCE_IMG_PATH + f"\\{new_image_name}")
         IMAGES_USED[new_image_name] = pixel_img.copy()
     else:
         pixel_img = IMAGES_USED[new_image_name].copy()
@@ -128,7 +132,10 @@ def create_img(img_path):
         print(f"Working on row: {current_row}...")
         print(f"Row {current_row} completed!")
 
-    cv2.imwrite(f"./DataSets/Finished/Test{img_path[18:]}", new_image)  #rotate_image(new_image, 270))  # {img_path[18:]}", new_image) flip 0
+    # cv2.imwrite(FINAL_IMG_PATH + f"\\{img_path[18:]}", new_image)  #rotate_image(new_image, 270))
+    # {img_path[18:]}", new_image) flip 0
+    img_name = img_path.split('\\')[-1]
+    cv2.imwrite(FINAL_IMG_PATH + f"\\{img_name}", new_image)
     print("Image completed!")
 
 
@@ -145,7 +152,7 @@ if __name__ == "__main__":
     end = time.time()
     print(f"{end - start} seconds to execute")
     """
-    names = ["Tess"]  # ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
+    names = ["24-12"]  # ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
     for name in names:
         img_path = f"./DataSets/Images/{name}.png"
         create_img(img_path)

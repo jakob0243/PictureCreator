@@ -91,7 +91,7 @@ def init_data_set():
 
 
 if __name__ == "__main__":
-    #  init_data_set()
+    init_data_set()
     """image = cv2.imread(IMAGE_DIR + '13-13.png')
     cv2.imshow('image', image)
     cv2.waitKey(0)
@@ -102,5 +102,5 @@ if __name__ == "__main__":
             pixel[0], pixel[1], pixel[2] = colour[0], colour[1], colour[2]
     cv2.imshow('image', image)
     cv2.waitKey(0)"""
-    read_images()
+    # read_images()
     print("Done")
