@@ -5,6 +5,8 @@
 import json
 import math
 import time
+import threading
+from multiprocessing import Process
 from os import path as path
 
 import cv2
@@ -100,6 +102,20 @@ def add_to_image(img_array, new_image_name, column, row):
     return img_array
 
 
+def fill_row(image, row, current_row):
+    """
+
+    """
+    current_col = 0
+    for pixel in row:  # Iterate over each pixel in that row
+        picture_for_pixel = find_nearest_colour(pixel)
+        if picture_for_pixel != BACKGROUND_COLOUR:
+            image = add_to_image(image, picture_for_pixel, current_row, current_col)
+        current_col += 1
+
+    print(f"Row {current_row} completed!")
+
+
 def create_img(img_path):
     """
     Create 6400 * 6400 pixel black image as numpy array then iterate over each pixel
@@ -114,28 +130,45 @@ def create_img(img_path):
         img = cv2.resize(img, (240, 240))
     new_image = np.zeros((80*img.shape[0], 80*img.shape[1], 3), np.uint8)
 
-    # cv2.imshow(img_path[18:], img)
-    # cv2.waitKey(0)
     # Rotate and flip, solves weird bug where created image is flipped and rotated
     img = cv2.flip(rotate_image(img, 270), 1)
 
     current_row = 0
-    current_col = 0
+    threads = []
+    # current_col = 0
     for row in img:  # Iterate over image to create
-        for pixel in row:  # Iterate over each pixel in that row
-            picture_for_pixel = find_nearest_colour(pixel)
-            if picture_for_pixel != BACKGROUND_COLOUR:
-                new_image = add_to_image(new_image, picture_for_pixel, current_row, current_col)
-            current_col += 1
-        current_col = 0
+        p = Process(target=fill_row, args=(new_image, row, current_row,))
+        p.start()
+        threads.append(p)
+
+        # row_thread = threading.Thread(target=fill_row, args=(new_image, row, current_row))
+        # threads.append(row_thread)
+        # row_thread.run()
+        # fill_row(new_image, row, current_row)
+        # for pixel in row:  # Iterate over each pixel in that row
+        #     picture_for_pixel = find_nearest_colour(pixel)
+        #     if picture_for_pixel != BACKGROUND_COLOUR:
+        #         new_image = add_to_image(new_image, picture_for_pixel, current_row, current_col)
+        #     current_col += 1
+        # current_col = 0
         current_row += 1
         print(f"Working on row: {current_row}...")
-        print(f"Row {current_row} completed!")
+        # print(f"Row {current_row} completed!")
 
-    # cv2.imwrite(FINAL_IMG_PATH + f"\\{img_path[18:]}", new_image)  #rotate_image(new_image, 270))
-    # {img_path[18:]}", new_image) flip 0
+    '''for num, thread in enumerate(threads):
+        print(f"Starting thread {num}...")
+        thread.start()'''
+
+    for num, thread in enumerate(threads):
+        print("waiting...")
+        thread.join()
+        print(f"Thread {num} joined back to main thread!")
+
+    print(new_image)
     img_name = img_path.split('\\')[-1]
-    cv2.imwrite(FINAL_IMG_PATH + f"\\{img_name}", new_image)
+    p = FINAL_IMG_PATH + f"\\{img_name}"
+    print(p)
+    cv2.imwrite(p, new_image)
     print("Image completed!")
 
 
@@ -152,10 +185,13 @@ if __name__ == "__main__":
     end = time.time()
     print(f"{end - start} seconds to execute")
     """
-    names = ["24-12"]  # ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
+    names = ["0-14"]  # ["18-8", "19-8", "20-8", "14-17", "9-17", "7-17", "3-5", "4-5", "5-5"]
     for name in names:
-        img_path = f"./DataSets/Images/{name}.png"
+        img_path = f"Z:\\new_folder\\GitHub\\PictureCreator\\source\\DataSets\\Images\\{name}.png"
+        t_start = time.time()
         create_img(img_path)
+        t_end = time.time()
+        print(f"Time taken: {t_end - t_start}")
     """
     Time before optimisations: 115.4655818939209 seconds to execute on raquaza
     Time after adding IMAGES_USED dict: 112.70291018486023
@@ -170,3 +206,8 @@ if __name__ == "__main__":
     # image = cv2.imread("./DataSets/pokeballtest.jfif")
     # image = cv2.resize(image, (80, 80))
     # cv2.imwrite("./DataSets/pokeball.png", image)
+    """
+    Without threading on picture 0-14: 36.986820220947266
+    With threading on picture 0-14: 37.82171297073364 (threading library)
+    With threading on picture 0-14: 21.241378784179688 (multi-processing library)
+    """
