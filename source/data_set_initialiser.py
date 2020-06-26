@@ -2,13 +2,8 @@
 Take a data set of images and assign a colour to each of these images based on average colour in image
 and save it as a dictionary or something, mapping colour value to img name.
 
-Tasks:
-    -   Iterate over directory and load each image into memory then get rid of it, should return list of names
-    -   When image is loaded in it avg the colour values of each pixel and map it to the name
-
 @author Jakob McKinney
 """
-import sys
 import cv2
 import json
 
@@ -57,8 +52,6 @@ def read_images():
         for col in range(0, 18):
             current_img = f"{row}-{col}.png"
             to_avg = cv2.imread(IMAGE_DIR + current_img)
-            # cv2.imshow("image", to_avg)
-            # cv2.waitKey(0)
             try:
                 colour = avg_colour(to_avg)
                 colour_values[current_img] = colour
