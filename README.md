@@ -2,7 +2,7 @@
  
 Currently any images that are not 80 * 80 will be resized to 240 * 240
 
-Times of different versions:
+<h3>Times of different versions:</h3>
 
         Time before adding IMAGES_USED dict: 115.4655818939209 (on 19-13)
         Time after adding IMAGES_USED dict: 112.70291018486023 (on 19-13)
@@ -19,10 +19,10 @@ Times of different versions:
                 Before: 112.70291018486023
                 After: 11.00510859489441
                 
-Example:
+<h3>Example:</h3>
 
 ![arceus_orig](/images/original_image.png)
 
-Goes to
+*Goes to*
 
 ![arceus](/images/final_image.png)
