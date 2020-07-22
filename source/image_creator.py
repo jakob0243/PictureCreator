@@ -21,8 +21,8 @@ def load_data():
 IMAGE_DICT = load_data()
 BACKGROUND_COLOUR = "black"
 BACKGROUND_IMAGE_PATH = "./DataSets/Images/24-17.png"
-SOURCE_IMG_PATH = "Z:\\new_folder\\GitHub\\PictureCreator\\source\\DataSets\\Images"
-FINAL_IMG_PATH = "Z:\\new_folder\\GitHub\\PictureCreator\\source\\DataSets\\Finished"
+SOURCE_IMG_PATH = ".\\DataSets\\Images"
+FINAL_IMG_PATH = ".\\DataSets\\Finished"
 IMAGES_USED = {}
 
 
