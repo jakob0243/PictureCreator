@@ -1,6 +1,6 @@
 """
 Take a data set of images and assign a colour to each of these images based on average colour in image
-and save it as a dictionary or something, mapping colour value to img name.
+and save it to a JSON file, mapping colour value to img name.
 
 @author Jakob McKinney
 """
@@ -85,15 +85,4 @@ def init_data_set():
 
 if __name__ == "__main__":
     init_data_set()
-    """image = cv2.imread(IMAGE_DIR + '13-13.png')
-    cv2.imshow('image', image)
-    cv2.waitKey(0)
-    colour = avg_colour(image)
-    print(colour)
-    for row in image:
-        for pixel in row:
-            pixel[0], pixel[1], pixel[2] = colour[0], colour[1], colour[2]
-    cv2.imshow('image', image)
-    cv2.waitKey(0)"""
-    # read_images()
     print("Done")
